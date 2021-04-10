@@ -63,7 +63,7 @@ MSe = []
 R2 =[]
 step = int(data.shape[0] * 0.2)
 low, up = 0,step
-for test in range(5):
+for Fold in range(5):
     if low == 0:
         nx_train = data[["ENGINESIZE"]][up:].values
         ny_train = data[["CO2EMISSIONS"]][up:].values
