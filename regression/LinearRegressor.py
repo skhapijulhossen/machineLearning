@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 # Loading Fuel Consumption Data
-data = pd.read_csv(r"C:\PYTHON\LinearRegression\FuelConsumption.csv")
+data = pd.read_csv(r"C:\PYTHON\machineLearning-from-scratch\regression\FuelConsumption.csv")
 print(data.head(10))
 print(data.info())
 split = int(data.shape[0]*0.8)
