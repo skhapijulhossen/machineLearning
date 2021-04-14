@@ -31,7 +31,7 @@ class KNNRegressor:
                     return e
             
             distance_matrix = np.array(distance_matrix)
-            self.neighbors = np.argsort(distance_matrix)[:3]
+            self.neighbors = np.argsort(distance_matrix)[:self.k]
             votes = self.y[self.neighbors]
             self.predictions.append(int(sum(votes)/len(votes)))
         
