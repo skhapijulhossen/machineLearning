@@ -4,26 +4,25 @@ import matplotlib.pyplot as pyplot
 import seaborn as sns
 
 
-
 # KNNClassifier
 class KNNClassifier:
     def __init__(self, k=3):
         self.k = k
         self.k_Neighbors = None
-    
-    def fit(self, X:np.ndarray, y:np.ndarray):
+
+    def fit(self, X: np.ndarray, y: np.ndarray):
         self.X = X
         self.y = y
         return True
-    
-    def predict(self, x:np.ndarray):
+
+    def predict(self, x: np.ndarray):
         self.predictions = []
         for test in x:
             distance_matrix = []
             for neighbors in range(len(self.X)):
-                euclidian_distance = np.sqrt(np.sum(self.X[neighbors, :] - test)**2)
+                euclidian_distance = np.sqrt(
+                    np.sum(self.X[neighbors, :] - test)**2)
                 distance_matrix.append(euclidian_distance)
-            # print(distance_matrix)
             distance_matrix = np.array(distance_matrix)
             self.k_Neighbors = np.argsort(distance_matrix)[:self.k]
             votes = self.y[self.k_Neighbors]
@@ -32,12 +31,10 @@ class KNNClassifier:
                 if label[0] in vote_counts.keys():
                     vote_counts[label[0]] += 1
                 else:
-                     vote_counts[label[0]] = 1 
-            # print(vote_counts)
-            majority = sorted(vote_counts.items(), key=lambda byVote:byVote[1])[-1][0]
-            # print(majority)
+                    vote_counts[label[0]] = 1
+            majority = sorted(vote_counts.items(),
+                              key=lambda byVote: byVote[1])[-1][0]
             self.predictions.append(majority)
-            # print(self.predictions)
         return np.array(self.predictions).reshape(len(self.predictions), 1)
 
 
@@ -48,9 +45,12 @@ def Jaccard_index(Y, yhat):
         Y = Y.values
     if not isinstance(yhat, np.ndarray):
         yhat = yhat.values
-    correct_prediction = sum([1 if Y[index][0] == yhat[index][0] else 0 for index in range(total)])
-    jaccard_index_score = (correct_prediction/((total+total)- correct_prediction))
+    correct_prediction = sum(
+        [1 if Y[index][0] == yhat[index][0] else 0 for index in range(total)])
+    jaccard_index_score = (
+        correct_prediction/((total+total) - correct_prediction))
     return round(jaccard_index_score, 4)
+
 
 def F1_Score(Y, yhat):
     total = len(Y)
@@ -59,7 +59,10 @@ def F1_Score(Y, yhat):
         Y = Y.values
     if not isinstance(yhat, np.ndarray):
         yhat = yhat.values
-    TP = 0; FN = 0; FP = 0;TN = 0
+    TP = 0
+    FN = 0
+    FP = 0
+    TN = 0
     for index in range(total):
         if Y[index][0] == yhat[index][0]:
             if Y[index][0] == 1:
@@ -81,12 +84,14 @@ def F1_Score(Y, yhat):
 
 
 # Data Pre-processing
-train_data = pd.read_csv(r'C:\PYTHON\machineLearning-from-scratch\classification\train.csv')
-test_data = pd.read_csv(r'C:\PYTHON\machineLearning-from-scratch\classification\test.csv')
+train_data = pd.read_csv(
+    r'C:\PYTHON\machineLearning-from-scratch\classification\train.csv')
+test_data = pd.read_csv(
+    r'C:\PYTHON\machineLearning-from-scratch\classification\test.csv')
 
 split = int(train_data.shape[0] * 0.8)
 
-train_X = train_data[['glucose_concentration','blood_pressure']]
+train_X = train_data[['glucose_concentration', 'blood_pressure']]
 trainX = train_X[:split]
 testX = train_X[split:]
 
@@ -96,7 +101,7 @@ testY = train_Y[split:]
 
 # Model Building
 clf = KNNClassifier(k=5)
-clf.fit(trainX.values,trainY.values)
+clf.fit(trainX.values, trainY.values)
 yhat = clf.predict(testX.values)
 
 print(Jaccard_index(testY, yhat))
