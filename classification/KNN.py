@@ -59,10 +59,7 @@ def F1_Score(Y, yhat):
         Y = Y.values
     if not isinstance(yhat, np.ndarray):
         yhat = yhat.values
-    TP = 0
-    FN = 0
-    FP = 0
-    TN = 0
+    TP = 0; FN = 0; FP = 0; TN = 0
     for index in range(total):
         if Y[index][0] == yhat[index][0]:
             if Y[index][0] == 1:
